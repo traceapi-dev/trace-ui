@@ -14,7 +14,7 @@ result = trace.track('YOUR_NUMBER', carrier='ups')
 ```
 
 Requires Python 3.11+. Source is public at
-https://github.com/Foreveryoung2149/trace-ui/tree/main/clients/python.
+https://github.com/traceapi-dev/trace-ui/tree/main/clients/python.
 The future registry command is `pip install traceapi-sdk==0.3.0`; use the pinned
 download until registry publication is confirmed.
 

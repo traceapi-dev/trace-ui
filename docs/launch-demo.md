@@ -31,7 +31,7 @@ demo with account creation.
 >
 > Try it: https://traceapi.dev/timeline-builder
 >
-> Source: https://github.com/Foreveryoung2149/trace-ui
+> Source: https://github.com/traceapi-dev/trace-ui
 >
 > Which tracking state is hardest to explain in your product?
 

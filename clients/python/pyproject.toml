@@ -21,4 +21,4 @@ traceapi = ["py.typed"]
 
 [project.urls]
 Homepage = "https://traceapi.dev/docs"
-Repository = "https://github.com/Foreveryoung2149/trace-ui/tree/main/clients/python"
+Repository = "https://github.com/traceapi-dev/trace-ui/tree/main/clients/python"
