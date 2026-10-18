@@ -14,7 +14,7 @@ const result = await trace.track({tracking_number: 'YOUR_NUMBER', carrier: 'ups'
 
 Requires Node 22+. Keep this client on the server. The UI component is a separate
 package: https://traceapi.dev/tracking-timeline. Source is public at
-https://github.com/Foreveryoung2149/trace-ui/tree/main/clients/typescript.
+https://github.com/traceapi-dev/trace-ui/tree/main/clients/typescript.
 The future registry command is `npm install @traceapi/sdk@0.3.0`; use the pinned
 download until registry publication is confirmed.
 

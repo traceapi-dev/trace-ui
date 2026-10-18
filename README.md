@@ -240,7 +240,7 @@ Builder JSON stays in page memory. It is not sent to a service, persisted or emb
 With **Node 22+** and npm:
 
 ```sh
-git clone https://github.com/Foreveryoung2149/trace-ui.git
+git clone https://github.com/traceapi-dev/trace-ui.git
 cd trace-ui
 npm ci
 npm run dev
@@ -390,4 +390,4 @@ The documentation check compiles this README's TSX examples and checks its local
 
 Bug reports with a small, sanitized reproduction are especially helpful. Contributions to accessibility, localization, provider mappings and difficult shipment states are welcome. Keep customer data, API keys, signing secrets and real tracking numbers out of public issues and pull requests.
 
-[Contributing](CONTRIBUTING.md) · [Report a bug](https://github.com/Foreveryoung2149/trace-ui/issues) · [Security reporting](SECURITY.md) · [Release checklist](RELEASING.md) · [MIT license](LICENSE)
+[Contributing](CONTRIBUTING.md) · [Report a bug](https://github.com/traceapi-dev/trace-ui/issues) · [Security reporting](SECURITY.md) · [Release checklist](RELEASING.md) · [MIT license](LICENSE)

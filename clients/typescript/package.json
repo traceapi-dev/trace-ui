@@ -20,7 +20,7 @@
     "node": ">=22"
   },
   "license": "MIT",
-  "repository": {"type": "git", "url": "git+https://github.com/Foreveryoung2149/trace-ui.git", "directory": "clients/typescript"},
+  "repository": {"type": "git", "url": "git+https://github.com/traceapi-dev/trace-ui.git", "directory": "clients/typescript"},
   "homepage": "https://traceapi.dev/docs#official-clients",
   "keywords": ["tracking", "shipment", "traceapi", "webhooks", "typescript"],
   "publishConfig": {"access": "public"},
