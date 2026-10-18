@@ -1,8 +1,36 @@
-# Product screenshots
+# Visual assets
+
+## README illustrations
+
+The main README uses original, code-authored SVG illustrations in `readme/`:
+
+- `hero.svg`: a parcel and its connected journey, with the Trace UI title.
+- `data-flow.svg`: provider data, the normalized shipment model, and the React
+  experience, with separate parcel journeys and explicit freshness/timezone
+  handling.
+
+These are **schematic illustrations**, not product screenshots, measured
+  delivery results, or evidence of live carrier coverage. Icons are original
+  vector paths. Artwork uses system font fallbacks; there are no remote fonts,
+  images, scripts, or embedded HTML. Text alternatives are supplied by the README
+  and the SVG title/description. The assets are covered by this repository's MIT
+  license.
+
+The hero includes a slow CSS route highlight and honors `prefers-reduced-motion`.
+The complete route and all information remain visible when motion or CSS is
+unsupported. GitHub and other image proxies may render SVGs statically; animation
+is decorative and is not required to understand the illustration.
+
+Edit these SVG sources directly. Keep diagram text short and leave detailed
+instructions in Markdown so they remain accessible on small screens.
+
+## Archived product captures
 
 These images show the actual Trace UI 0.2 builder with fictional samples. They
 are product captures, not generated mockups or evidence of live carrier success.
 No customer account, real tracking number or credential is used.
+They are retained as historical launch assets and are no longer embedded in the
+main README.
 
 - `timeline-builder.png`: the builder controls, shipment preview and React-export entry.
 - `split-order.png`: two independent parcel timelines rendered by `OrderTracking`.
