@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480" role="img" aria-labelledby="title description">
+  <title id="title">Trace UI — clear shipment experiences for React</title>
+  <desc id="description">An original vector illustration of a parcel and a connected shipment journey. Provider-independent React components, released under the MIT license. This is schematic artwork, not a product screenshot or live shipment.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#121715"/>
+      <stop offset=".56" stop-color="#090c0b"/>
+      <stop offset="1" stop-color="#101513"/>
+    </linearGradient>
+    <linearGradient id="parcel-top" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#273d32"/>
+      <stop offset="1" stop-color="#15251d"/>
+    </linearGradient>
+    <linearGradient id="parcel-side" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#14231b"/>
+      <stop offset="1" stop-color="#1c3025"/>
+    </linearGradient>
+    <style>
+      .type { font-family: Arial, Helvetica, sans-serif; }
+      .route-highlight { stroke-dasharray: 12 490; animation: journey 16s linear infinite; }
+      @keyframes journey { to { stroke-dashoffset: -502; } }
+      @media (prefers-reduced-motion: reduce) { .route-highlight { animation: none; } }
+    </style>
+  </defs>
+  <rect x=".5" y=".5" width="1199" height="479" rx="22" fill="url(#background)" stroke="#2b3530"/>
+  <path d="M626 56v368" stroke="#27312b"/>
+
+  <g class="type">
+    <text x="62" y="77" fill="#a7c7b2" font-size="17" letter-spacing="2.8">OPEN SOURCE · REACT</text>
+    <text x="58" y="183" fill="#f4f3ed" font-size="84" font-weight="600" letter-spacing="-5">Trace UI</text>
+    <text x="62" y="252" fill="#f4f3ed" font-size="35" letter-spacing="-1">Every shipment.</text>
+    <text x="62" y="297" fill="#f4f3ed" font-size="35" letter-spacing="-1">A clearer story.</text>
+    <text x="62" y="402" fill="#a4afa8" font-size="20">Your backend. Your brand. MIT licensed.</text>
+  </g>
+
+  <!-- The complete route is visible without animation or CSS support. -->
+  <path d="M697 126h50c28 0 44 16 44 44v135c0 28 16 44 44 44h118c28 0 44-16 44-44v-4" fill="none" stroke="#365143" stroke-width="2"/>
+  <path class="route-highlight" d="M697 126h50c28 0 44 16 44 44v135c0 28 16 44 44 44h118c28 0 44-16 44-44v-4" fill="none" stroke="#a7d4b6" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="697" cy="126" r="12" fill="#18291f" stroke="#90b99f" stroke-width="2"/>
+  <circle cx="697" cy="126" r="4" fill="#b5d7bf"/>
+  <circle cx="791" cy="252" r="8" fill="#0c100e" stroke="#729b81" stroke-width="2"/>
+  <circle cx="865" cy="349" r="8" fill="#0c100e" stroke="#729b81" stroke-width="2"/>
+
+  <!-- A purpose-drawn isometric parcel, not a carrier logo. -->
+  <g stroke="#a4c7af" stroke-width="2.2" stroke-linejoin="round">
+    <path d="m929 108 119 62-119 63-119-63z" fill="url(#parcel-top)"/>
+    <path d="m810 170 119 63v128l-119-63z" fill="#122019"/>
+    <path d="m929 233 119-63v128l-119 63z" fill="url(#parcel-side)"/>
+    <path d="m868 139 119 63v40l-25 13v-40l-119-63" fill="#3a5544" stroke="#8bab96"/>
+    <path d="m840 238 37 20m-37-8 25 13" fill="none" stroke="#759681" stroke-linecap="round"/>
+  </g>
+  <circle cx="1048" cy="298" r="29" fill="#172b20" stroke="#87b798" stroke-width="2"/>
+  <path d="m1036 298 8 8 16-17" fill="none" stroke="#c4e3cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g class="type" fill="#91a399" font-size="16" letter-spacing="1.5">
+    <text x="690" y="402">DATA</text>
+    <path d="M757 396h206" stroke="#365143"/>
+    <text x="984" y="402">EXPERIENCE</text>
+  </g>
+</svg>

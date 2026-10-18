@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="330" viewBox="0 0 1200 330" role="img" aria-labelledby="title description">
+  <title id="title">From your tracking data to your React experience</title>
+  <desc id="description">Your server supplies provider data, which you map to the TimelineShipment model, and Trace UI renders it in React. Keep parcels separate, label freshness explicitly, and preserve unknown scan timezones. The component does not make network requests.</desc>
+  <defs>
+    <style>.type { font-family: Arial, Helvetica, sans-serif; }</style>
+  </defs>
+  <rect x=".5" y=".5" width="1199" height="329" rx="20" fill="#0b0f0d" stroke="#2b3530"/>
+  <g class="type">
+    <text x="44" y="55" font-size="29" letter-spacing="-.6" fill="#f4f3ed">Your data. Your experience.</text>
+    <text x="44" y="87" font-size="18" fill="#a4afa8">Trace UI renders what you supply. No network requests from the component.</text>
+  </g>
+
+  <!-- Provider: three independent inputs converge on one adapter. -->
+  <g fill="none" stroke="#9cc3a9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="46" y="119" width="16" height="16" rx="4" fill="#1a2b21"/>
+    <rect x="46" y="147" width="16" height="16" rx="4" fill="#1a2b21"/>
+    <rect x="46" y="175" width="16" height="16" rx="4" fill="#1a2b21"/>
+    <path d="M62 127h18c9 0 13 4 13 13v30c0 9-4 13-13 13H62m0-28h47"/>
+    <circle cx="116" cy="155" r="7" fill="#1a2b21"/>
+  </g>
+  <path d="M327 155h75" stroke="#405c49" stroke-width="2"/>
+  <circle cx="402" cy="155" r="3" fill="#9cc3a9"/>
+  <g class="type">
+    <text x="44" y="229" font-size="26" letter-spacing="-.7" fill="#f4f3ed">Any tracking provider</text>
+    <text x="44" y="258" font-size="19" fill="#a4afa8">Fetched by your backend</text>
+  </g>
+
+  <!-- Model: one explicit, typed data shape. -->
+  <g fill="none" stroke="#9cc3a9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m474 122 37 20-37 20-37-20z" fill="#21382a"/>
+    <path d="m437 142 37 20v40l-37-20z" fill="#122019"/>
+    <path d="m474 162 37-20v40l-37 20z" fill="#1a2e22"/>
+    <path d="m455 132 37 20v13"/>
+  </g>
+  <path d="M727 155h75" stroke="#405c49" stroke-width="2"/>
+  <circle cx="802" cy="155" r="3" fill="#9cc3a9"/>
+  <g class="type">
+    <text x="435" y="229" font-size="26" letter-spacing="-.7" fill="#f4f3ed">One shipment model</text>
+    <text x="435" y="258" font-size="19" fill="#a4afa8">Typed, normalized by you</text>
+  </g>
+
+  <!-- Experience: separate steps retain their own status. -->
+  <g fill="none" stroke="#9cc3a9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M850 135v42" stroke="#405c49"/>
+    <circle cx="850" cy="129" r="7" fill="#294b35"/>
+    <path d="m847 129 2 2 4-5" stroke="#d1e9d7"/>
+    <circle cx="850" cy="157" r="7" fill="#294b35"/>
+    <circle cx="850" cy="185" r="7" fill="#0b0f0d"/>
+    <path d="M872 125h52m-52 8h32m-32 20h52m-52 8h32m-32 20h52m-52 8h32"/>
+  </g>
+  <g class="type">
+    <text x="840" y="229" font-size="26" letter-spacing="-.7" fill="#f4f3ed">Your React experience</text>
+    <text x="840" y="258" font-size="19" fill="#a4afa8">Compose, theme and render</text>
+  </g>
+  <path d="M44 285h1112" stroke="#27352c"/>
+  <g class="type" font-size="17" fill="#a7c7b2">
+    <text x="44" y="311">Separate parcel journeys</text>
+    <text x="435" y="311">Explicit freshness</text>
+    <text x="840" y="311">Unknown timezones preserved</text>
+  </g>
+</svg>
