@@ -1,7 +1,7 @@
 # Official Trace TypeScript client - 0.3.0
 
 ```sh
-npm install https://traceapi.dev/downloads/traceapi-sdk-0.3.0.tgz
+npm install @traceapi/sdk@0.3.0
 ```
 
 ```ts
@@ -15,8 +15,9 @@ const result = await trace.track({tracking_number: 'YOUR_NUMBER', carrier: 'ups'
 Requires Node 22+. Keep this client on the server. The UI component is a separate
 package: https://traceapi.dev/tracking-timeline. Source is public at
 https://github.com/traceapi-dev/trace-ui/tree/main/clients/typescript.
-The future registry command is `npm install @traceapi/sdk@0.3.0`; use the pinned
-download until registry publication is confirmed.
+Published on [npm](https://www.npmjs.com/package/@traceapi/sdk).
+The original [pinned download](https://traceapi.dev/downloads/traceapi-sdk-0.3.0.tgz)
+remains available for existing integrations.
 
 Server-side client for tracking, order-linked shipments, imports, action feeds,
 merchant cohorts and webhook recovery. See https://traceapi.dev/docs#official-clients
@@ -36,6 +37,5 @@ matching v1 signature during rotation overlap. Deduplicate event IDs after
 verification. Keep API keys/signing secrets on your server.
 
 Pin this 0.x version; future 0.x releases may break compatibility. New /v1
-response fields are additive; clients must tolerate them. Download artifacts
-are served by Trace; registry publication is separate. MIT license covers SDK
+response fields are additive; clients must tolerate them. MIT license covers SDK
 code only. Python requires 3.11+; the TypeScript client requires Node 22+.

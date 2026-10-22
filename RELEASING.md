@@ -15,7 +15,7 @@ Review the archive contents and licenses, then install the archives into a clean
 consumer project. Compare versions with package metadata and commit/tag the
 release source. This release uses timeline 0.2.0 and clients 0.3.0.
 
-## npm — after account and organization ownership exist
+## npm — after account and scope ownership exist
 
 ```sh
 npm login

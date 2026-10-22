@@ -6,14 +6,14 @@ MIT licensed. No required Trace logo or attribution. Use your own tracking backe
 
 ## Install
 
-Pinned direct download (available before registry publication):
+Install from [npm](https://www.npmjs.com/package/@traceapi/timeline):
 
 ```sh
-npm install https://traceapi.dev/downloads/traceapi-timeline-0.2.0.tgz
+npm install @traceapi/timeline@0.2.0
 ```
 
-After the registry release is confirmed, the equivalent will be
-`npm install @traceapi/timeline@0.2.0`. Do not assume it is published yet.
+The original [pinned download](https://traceapi.dev/downloads/traceapi-timeline-0.2.0.tgz)
+remains available for existing integrations.
 
 Try the local-first visual builder at https://traceapi.dev/timeline-builder.
 It includes scenario replay, split-order previews, JSON validation and React export.
