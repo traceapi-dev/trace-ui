@@ -3,7 +3,8 @@
 Source and pinned downloads can be used before registry publication. The first
 npm and PyPI releases require the owner's accounts. Do not paste tokens into chat
 or commit credentials. Use the registries' official account setup and sign in
-directly. Own the `@traceapi` npm organization before using that scope.
+directly. The `traceapi` npm user owns its personal `@traceapi` scope; a separate
+organization is not required. Verify `npm whoami` before publishing.
 
 ## Verify source and archives
 
@@ -31,6 +32,22 @@ releases, configure a trusted publisher on the existing packages rather than
 storing a long-lived publishing token in this repository.
 
 ## PyPI — after account and project ownership exist
+
+The preferred release path is `.github/workflows/publish-python.yml`:
+
+1. Configure a PyPI pending trusted publisher for `traceapi-sdk`, owner
+   `traceapi-dev`, repository `trace-ui`, workflow `publish-python.yml`, environment
+   `pypi`. Complete account 2FA and save recovery codes privately first.
+2. Run **Publish Python SDK** with `publish=false` to build, test the installed
+   wheel, validate metadata, and inspect the allowlisted artifact contents.
+3. From `main`, run it with `publish=true` to publish those tested distributions
+   with short-lived OIDC credentials and attestations. No PyPI token belongs in
+   repository secrets. Repeating a published version must fail; do not skip it.
+4. Install from PyPI in a fresh environment and run the fixture tests again.
+
+Publishing is manual and restricted to `main`; pushes and pull requests do not
+publish. The build job cannot obtain publishing credentials. The publishing job
+downloads the tested artifacts and does not run repository build scripts.
 
 Check https://pypi.org/project/traceapi-sdk/ for name availability before the first
 upload. Publish only the reviewed 0.3.0 wheel and source archive using Twine, or
