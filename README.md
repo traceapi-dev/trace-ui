@@ -44,7 +44,7 @@ The React component makes **no network requests**, includes **no telemetry**, an
 Install the pinned **0.2.0** release in an app using React 18.2 or 19:
 
 ```sh
-npm install https://traceapi.dev/downloads/traceapi-timeline-0.2.0.tgz
+npm install @traceapi/timeline@0.2.0
 ```
 
 Render a fictional shipment immediately:
@@ -67,7 +67,7 @@ export default function TrackingView() {
 
 In **Next.js**, import the stylesheet once in your root `app/layout.tsx`. The components render in server or client components and have no Tailwind dependency. Your app owns data fetching and refresh behavior.
 
-**Distribution:** use the pinned downloads in this guide. npm and PyPI publication is pending; `npm install @traceapi/timeline` is not the documented installation path yet. The component is **0.2.0**; the optional API clients are **0.3.0**. Pin versions while these packages are in 0.x.
+**Distribution:** install the component from [npm](https://www.npmjs.com/package/@traceapi/timeline), the TypeScript client from [npm](https://www.npmjs.com/package/@traceapi/sdk), and the Python client from [PyPI](https://pypi.org/project/traceapi-sdk/). The component is **0.2.0**; the optional API clients are **0.3.0**. Pin versions while these packages are in 0.x. Existing pinned downloads remain available.
 
 ## Bring your own data
 
@@ -293,7 +293,7 @@ The UI works with any backend that maps data to its model. If you want a managed
 Install the optional **server-side** TypeScript client:
 
 ```sh
-npm install https://traceapi.dev/downloads/traceapi-sdk-0.3.0.tgz
+npm install @traceapi/sdk@0.3.0
 ```
 
 This Next.js server-component example uses the sandbox to try the integration without a live carrier request. It requires your own Trace API key in a server environment variable:
@@ -319,7 +319,7 @@ export default async function SandboxTracking() {
 A **Python 3.11+** client is also included for Python backends:
 
 ```sh
-python -m pip install https://traceapi.dev/downloads/traceapi_sdk-0.3.0-py3-none-any.whl
+python -m pip install traceapi-sdk==0.3.0
 ```
 
 [TypeScript client guide](clients/typescript/README.md) · [Python client guide](clients/python/README.md) · [API documentation](https://traceapi.dev/docs) · [Create a Trace account](https://traceapi.dev/signup?utm_source=github&utm_medium=readme&utm_campaign=trace-ui-readme)
