@@ -1,6 +1,7 @@
 """Reject unexpected files before uploading public Python distributions."""
 from pathlib import Path, PurePosixPath
 import hashlib
+import re
 import sys
 import tarfile
 import zipfile
@@ -19,6 +20,7 @@ for archive in archives:
     if archive.suffix == '.whl':
         with zipfile.ZipFile(archive) as package:
             names = package.namelist()
+            assert all(not re.search(rb'parser_build|source_attempts|version_short|in_process', package.read(name)) for name in names if not name.endswith('/')), 'Private operational fields in archive'
             for name in names:
                 parts = PurePosixPath(name).parts
                 assert '..' not in parts and not name.startswith('/'), name
@@ -34,6 +36,7 @@ for archive in archives:
                 parts = PurePosixPath(member.name).parts
                 assert parts[0] == expected_root and '..' not in parts, member.name
                 if member.isfile():
+                    assert not re.search(rb'parser_build|source_attempts|version_short|in_process', package.extractfile(member).read()), 'Private operational fields in archive'
                     relative = '/'.join(parts[1:])
                     assert relative in source_files, member.name
                     names.append(relative)

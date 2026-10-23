@@ -57,12 +57,7 @@ HealthStatus = TypedDict("HealthStatus", {
     "service": "str",
     "database": "Literal[\"operational\", \"degraded\", \"memory\"]",
     "acquisition": "NotRequired[dict[str, Any]]",
-    "timestamp": "NotRequired[str]",
-    "started_at": "NotRequired[str]",
-    "uptime_seconds": "NotRequired[int]",
-    "environment": "NotRequired[str]",
-    "version": "NotRequired[str]",
-    "version_short": "NotRequired[str]"
+    "timestamp": "NotRequired[str]"
 })
 
 Webhook = TypedDict("Webhook", {
@@ -306,6 +301,35 @@ AnalyticsReport = TypedDict("AnalyticsReport", {
     "excluded_delivered_durations": "int",
     "median_observed_transit_hours": "float | None",
     "cohorts": "list[AnalyticsCohort]"
+})
+
+InspectObservation = TypedDict("InspectObservation", {
+    "id": "str",
+    "request_id": "str",
+    "shipment_id": "str | None",
+    "tracking_number": "str",
+    "origin": "str",
+    "state": "Literal[\"live\", \"cached\", \"stale\", \"failed\"]",
+    "outcome": "str",
+    "duration_ms": "int",
+    "response_status": "int | None",
+    "trace_observed_at": "str",
+    "source_checked_at": "str | None",
+    "expires_at": "str",
+    "revision": "int | None",
+    "quota": "dict[str, Any]",
+    "evidence": "dict[str, Any]",
+    "snapshot": "NotRequired[dict[str, Any] | None]",
+    "error_code": "str | None"
+})
+
+InspectCorrection = TypedDict("InspectCorrection", {
+    "id": "str",
+    "from_observation_id": "str",
+    "to_observation_id": "str",
+    "kind": "Literal[\"account_declared\", \"parser_reinterpretation\"]",
+    "reason": "str",
+    "created_at": "str"
 })
 
 ShipmentWebhookEvent = TypedDict("ShipmentWebhookEvent", {

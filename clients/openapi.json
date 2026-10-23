@@ -366,14 +366,6 @@
           "acquisition": {
             "type": "object",
             "properties": {
-              "mode": {
-                "type": "string",
-                "enum": [
-                  "queue",
-                  "isolated",
-                  "in_process"
-                ]
-              },
               "state": {
                 "type": "string",
                 "enum": [
@@ -383,27 +375,11 @@
                 ]
               }
             },
-            "description": "Queue readiness checks a recent browser-worker heartbeat; it is not a live carrier lookup."
+            "description": "Tracking readiness is not a live carrier lookup."
           },
           "timestamp": {
             "type": "string",
             "format": "date-time"
-          },
-          "started_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "uptime_seconds": {
-            "type": "integer"
-          },
-          "environment": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "version_short": {
-            "type": "string"
           }
         },
         "required": [
@@ -1580,6 +1556,152 @@
           "cohorts"
         ]
       },
+      "InspectObservation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "shipment_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "tracking_number": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "live",
+              "cached",
+              "stale",
+              "failed"
+            ]
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "duration_ms": {
+            "type": "integer"
+          },
+          "response_status": {
+            "type": "integer",
+            "nullable": true
+          },
+          "trace_observed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "revision": {
+            "type": "integer",
+            "nullable": true
+          },
+          "quota": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "charged",
+                  "released",
+                  "not_metered",
+                  "unknown"
+                ]
+              },
+              "units": {
+                "type": "integer",
+                "nullable": true
+              }
+            },
+            "required": [
+              "state",
+              "units"
+            ]
+          },
+          "evidence": {
+            "type": "object",
+            "description": "Request timing when available. Private operational metadata is not returned."
+          },
+          "snapshot": {
+            "type": "object",
+            "nullable": true,
+            "description": "At most 100 source-reported scans; event_count and events_truncated disclose the retained display limit."
+          },
+          "error_code": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "request_id",
+          "shipment_id",
+          "tracking_number",
+          "origin",
+          "state",
+          "outcome",
+          "duration_ms",
+          "response_status",
+          "trace_observed_at",
+          "source_checked_at",
+          "expires_at",
+          "revision",
+          "quota",
+          "evidence",
+          "error_code"
+        ]
+      },
+      "InspectCorrection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "from_observation_id": {
+            "type": "string"
+          },
+          "to_observation_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "account_declared",
+              "parser_reinterpretation"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "from_observation_id",
+          "to_observation_id",
+          "kind",
+          "reason",
+          "created_at"
+        ]
+      },
       "ShipmentWebhookEvent": {
         "type": "object",
         "properties": {
@@ -1710,7 +1832,7 @@
     "/v1/track": {
       "post": {
         "summary": "Track a single package",
-        "description": "Send a tracking number. Trace auto-detects selected formats unless you provide a catalogued carrier code, then returns a normalized status and dated events from a source page containing the requested number. Catalog inclusion does not guarantee live events or carrier-authoritative accuracy. Successful results are cached for 30 minutes. If no source contains the number or no usable events can be parsed, the API returns 503 instead of an empty pending result. With allow_stale=true it can return clearly marked previously verified data younger than 24 hours after a failed live attempt.",
+        "description": "Send a tracking number. Trace auto-detects selected formats unless you provide a catalogued carrier code, then returns a normalized status and dated events associated with the requested number. Catalog inclusion does not guarantee live events or carrier-authoritative accuracy. Successful results are cached for 30 minutes. If no usable events can be verified for that number, the API returns 503 instead of an empty pending result. With allow_stale=true it can return clearly marked previously verified data younger than 24 hours after a failed live attempt.",
         "security": [
           {
             "bearerAuth": []
@@ -1990,7 +2112,7 @@
             }
           },
           "503": {
-            "description": "Database or browser-worker readiness is unavailable",
+            "description": "Database or tracking readiness is unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -2018,7 +2140,7 @@
             }
           },
           "503": {
-            "description": "Database or browser-worker readiness is unavailable",
+            "description": "Database or tracking readiness is unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -2561,6 +2683,665 @@
           },
           "502": {
             "description": "Receiver test could not be completed"
+          }
+        }
+      }
+    },
+    "/v1/inspect": {
+      "get": {
+        "summary": "List your retained tracking observations",
+        "description": "Requires Inspect enabled. Up to 500 observations/account retained for seven days. Acquisition inspections start at enablement; no historical backfill, and pre-acquisition admission rejections are not captured. No lookup quota consumed by reads; normal RPM applies.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "request_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shipment_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List your retained tracking observations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InspectObservation"
+                      }
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "next_cursor"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Monthly lookup quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or resource limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/inspect/{id}": {
+      "get": {
+        "summary": "Inspect shipment, quota and webhook evidence",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inspect shipment, quota and webhook evidence",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "run": {
+                      "$ref": "#/components/schemas/InspectObservation"
+                    },
+                    "corrections": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InspectCorrection"
+                      }
+                    },
+                    "deliveries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "description": "Up to 20 owned deliveries, each with up to 10 saved attempts. Only exact request/event identities are joined; raw payloads, URLs and secrets are excluded."
+                    },
+                    "limits": {
+                      "type": "object"
+                    },
+                    "caveat": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "run",
+                    "corrections",
+                    "deliveries",
+                    "limits",
+                    "caveat"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Monthly lookup quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or resource limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/inspect/settings": {
+      "get": {
+        "summary": "Read your account's Inspect capture preference",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Read your account's Inspect capture preference",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "limits": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "limits"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Monthly lookup quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or resource limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Opt in to or stop future diagnostic capture",
+        "description": "Capture is off by default for existing and new accounts. Opting out stops future capture without deleting retained history before normal expiry. Normal RPM applies; no lookup charge.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "enabled"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Opt in to or stop future diagnostic capture",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "effect": {
+                      "type": "string",
+                      "enum": [
+                        "future_capture_only"
+                      ]
+                    },
+                    "existing_history_retained_until_expiry": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "effect",
+                    "existing_history_retained_until_expiry"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Monthly lookup quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or resource limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/inspect/corrections": {
+      "post": {
+        "summary": "Declare an explicit correction relationship",
+        "description": "Links distinct earlier/later successful retained observations of the same owned shipment. An account declaration is not an independently verified carrier fact. Original snapshots and live tracking remain intact; no webhook or email is sent. Repeating the same relationship/reason is idempotent; conflicting details return 409. At most ten outgoing corrections per observation.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "shipment_id": {
+                    "type": "string"
+                  },
+                  "from_observation_id": {
+                    "type": "string"
+                  },
+                  "to_observation_id": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 600
+                  }
+                },
+                "required": [
+                  "shipment_id",
+                  "from_observation_id",
+                  "to_observation_id",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Declare an explicit correction relationship",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "correction": {
+                      "$ref": "#/components/schemas/InspectCorrection"
+                    },
+                    "effect": {
+                      "type": "string",
+                      "enum": [
+                        "annotation_only"
+                      ]
+                    },
+                    "notifications_sent": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    }
+                  },
+                  "required": [
+                    "correction",
+                    "effect",
+                    "notifications_sent"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Monthly lookup quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found for this account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict or resource limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Request limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
